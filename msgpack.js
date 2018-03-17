@@ -193,6 +193,11 @@ Decoder.prototype.parse = function () {
   throw new Error("Unknown type 0x" + type.toString(16));
 };
 function decode(buffer) {
+
+  if (buffer.length == 0) {
+    throw new Error('Can not decode an empty buffer');
+  }
+
   var decoder = new Decoder(buffer);
   var value = decoder.parse();
   var difference;
