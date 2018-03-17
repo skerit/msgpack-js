@@ -195,7 +195,18 @@ Decoder.prototype.parse = function () {
 function decode(buffer) {
   var decoder = new Decoder(buffer);
   var value = decoder.parse();
-  if (decoder.offset !== buffer.length) throw new Error((buffer.length - decoder.offset) + " trailing bytes");
+  var difference;
+
+  if (decoder.offset !== buffer.length) {
+    difference = buffer.length - decoder.offset;
+
+    if (difference == -1 || difference == 1) {
+      console.warn('msgpack', difference, 'trailing byte issue for value:', value);
+    } else {
+      throw new Error(difference + ' trailing bytes');
+    }
+  }
+
   return value;
 }
 
